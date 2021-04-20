@@ -14,7 +14,7 @@ class AppBarWidget extends PreferredSize {
               child: Stack(
                 children: [
                   Container(
-                    height: 190,
+                    height: 146,
                     width: double.maxFinite,
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     decoration: BoxDecoration(gradient: AppGradients.linear),
@@ -45,7 +45,7 @@ class AppBarWidget extends PreferredSize {
                     ),
                   ),
                   Align(
-                    alignment: Alignment(0.0, 1.5),
+                    alignment: Alignment(0.0, 1.0),
                       child: ScoreCardWidget()
                   )
                 ],
