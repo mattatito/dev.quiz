@@ -22,6 +22,6 @@ flutter:
 
   assets:
     - assets/images/
-    - database/
+    - assets/database/
   uses-material-design: true
 
