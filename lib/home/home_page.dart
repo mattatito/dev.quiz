@@ -1,4 +1,5 @@
 import 'package:dev_quiz/core/app_colors.dart';
+import 'package:dev_quiz/core/app_text_styles.dart';
 import 'package:dev_quiz/home/home_controller.dart';
 import 'package:dev_quiz/home/home_repository.dart';
 import 'package:dev_quiz/home/home_state.dart';
@@ -28,64 +29,75 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
 
-    if(controller.state == HomeState.success){
-
-    return Scaffold(
-      appBar: AppBarWidget(
-        user: controller.user!,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          children: [
-            SizedBox(
-              height: 24,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    switch(controller.state){
+      case HomeState.success:
+        return Scaffold(
+          appBar: AppBarWidget(
+            user: controller.user!,
+          ),
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
               children: [
-                LevelButtonWidget(
-                  label: "Fácil",
+                SizedBox(
+                  height: 24,
                 ),
-                LevelButtonWidget(
-                  label: "Médio",
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    LevelButtonWidget(
+                      label: "Fácil",
+                    ),
+                    LevelButtonWidget(
+                      label: "Médio",
+                    ),
+                    LevelButtonWidget(
+                      label: "Difícil",
+                    ),
+                    LevelButtonWidget(
+                      label: "Perito",
+                    ),
+                  ],
                 ),
-                LevelButtonWidget(
-                  label: "Difícil",
+                SizedBox(
+                  height: 24,
                 ),
-                LevelButtonWidget(
-                  label: "Perito",
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 24,
-            ),
-            Expanded(
-                child: GridView.count(
-              crossAxisCount: 2,
-              crossAxisSpacing: 16,
-              mainAxisSpacing: 16,
-              children: controller.quizzes!
-                  .map((quiz) => QuizCardWidget(
+                Expanded(
+                    child: GridView.count(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 16,
+                      mainAxisSpacing: 16,
+                      children: controller.quizzes!
+                          .map((quiz) => QuizCardWidget(
                         title: quiz.title,
                         completed:
-                            "${quiz.questionAnswered}/${quiz.questions.length}",
+                        "${quiz.questionAnswered}/${quiz.questions.length}",
                         percent: quiz.questionAnswered / quiz.questions.length,
                       ))
-                  .toList(),
-            ))
-          ],
-        ),
-      ),
-    );}else {
-      return Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(AppColors.darkGreen),
+                          .toList(),
+                    ))
+              ],
+            ),
           ),
-        ),
-      );
+        );
+      case HomeState.loading:
+        return Scaffold(
+          body: Center(
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(AppColors.darkGreen),
+            ),
+          ),
+        );
+
+      case HomeState.error:
+        return Scaffold(
+          body: Center(
+            child: Text("Um erro aconteceu =( Tente reiniciar o app.", style: AppTextStyles.body,),
+          ),
+        );
+      case HomeState.empty:
+        return Container();
     }
+
   }
 }
