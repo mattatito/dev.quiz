@@ -37,10 +37,8 @@ class _QuizWidgetState extends State<QuizWidget> {
               AnswerWidget(
                 onTap: (){
                   _indexSelected = i;
-
                   setState(() {
                   });
-
                   Future.delayed(Duration(seconds: 1)).then((value) => widget.onChange());
                 },
                 disabled: _indexSelected != -1,
