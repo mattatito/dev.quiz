@@ -31,6 +31,10 @@ class _ChallengePageState extends State<ChallengePage> {
     super.initState();
   }
 
+  void nextPage(){
+    pageController.nextPage(duration: Duration(milliseconds: 100), curve: Curves.linear);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,7 +60,10 @@ class _ChallengePageState extends State<ChallengePage> {
         physics: NeverScrollableScrollPhysics(),
         children: widget.questions
             .map(
-              (question) => QuizWidget(question: question),
+              (question) => QuizWidget(
+                  question: question,
+                onChange: nextPage,
+              ),
             )
             .toList(),
         controller: pageController,
@@ -71,23 +78,30 @@ class _ChallengePageState extends State<ChallengePage> {
               Expanded(
                 child: NextButtonWidget.white(
                   label: "Pular",
-                  onTap: () {
-                    pageController.nextPage(
-                      duration: Duration(milliseconds: 100),
-                      curve: Curves.linear,
-                    );
-                  },
+                  onTap: nextPage,
                 ),
               ),
-              SizedBox(
+
+             ValueListenableBuilder(valueListenable: controller.currentPageNotifier, builder: (context,value,_) => Row(
+               children: [
+
+               ],
+             ))
+
+             /* SizedBox(
                 width: 7,
-              ),
+              ),*/
+              //Abordagens:
+              //Podemos tirar o botão de confirmar, fazendo com que o botão "pular" seja o de "avançar"
+              //Ou, podemos deixar MAS teria que alterar o fluxo do AnswerWidget para que ele selecione os itens
+              //para que o botão de "confirmar" faça sentido.
+              /*
               Expanded(
                 child: NextButtonWidget.green(
                   label: "Confirmar",
                   onTap: () {},
                 ),
-              )
+              )*/
             ],
           ),
         ),
