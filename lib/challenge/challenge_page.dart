@@ -31,8 +31,10 @@ class _ChallengePageState extends State<ChallengePage> {
     super.initState();
   }
 
-  void nextPage(){
-    pageController.nextPage(duration: Duration(milliseconds: 100), curve: Curves.linear);
+  void nextPage() {
+    if(controller.currentPage < widget.questions.length)
+      pageController.nextPage(
+          duration: Duration(milliseconds: 100), curve: Curves.linear);
   }
 
   @override
@@ -61,7 +63,7 @@ class _ChallengePageState extends State<ChallengePage> {
         children: widget.questions
             .map(
               (question) => QuizWidget(
-                  question: question,
+                question: question,
                 onChange: nextPage,
               ),
             )
@@ -71,40 +73,35 @@ class _ChallengePageState extends State<ChallengePage> {
       bottomNavigationBar: SafeArea(
         bottom: true,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Expanded(
-                child: NextButtonWidget.white(
-                  label: "Pular",
-                  onTap: nextPage,
-                ),
-              ),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: ValueListenableBuilder<int>(
+                valueListenable: controller.currentPageNotifier,
+                builder: (context, value, _) => Row(
+                      children: [
+                        if (value < widget.questions.length)
+                          Expanded(
+                            child: NextButtonWidget.white(
+                              label: "Pular",
+                              onTap: nextPage,
+                            ),
+                          ),
+                        if (value == widget.questions.length)
+                          Expanded(
+                            child: NextButtonWidget.green(
+                              label: "Confirmar",
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                          )
+                      ],
+                    ))
+            //Abordagens:
+            //Podemos tirar o botão de confirmar, fazendo com que o botão "pular" seja o de "avançar"
+            //Ou, podemos deixar MAS teria que alterar o fluxo do AnswerWidget para que ele selecione os itens
+            //para que o botão de "confirmar" faça sentido.
 
-             ValueListenableBuilder(valueListenable: controller.currentPageNotifier, builder: (context,value,_) => Row(
-               children: [
-
-               ],
-             ))
-
-             /* SizedBox(
-                width: 7,
-              ),*/
-              //Abordagens:
-              //Podemos tirar o botão de confirmar, fazendo com que o botão "pular" seja o de "avançar"
-              //Ou, podemos deixar MAS teria que alterar o fluxo do AnswerWidget para que ele selecione os itens
-              //para que o botão de "confirmar" faça sentido.
-              /*
-              Expanded(
-                child: NextButtonWidget.green(
-                  label: "Confirmar",
-                  onTap: () {},
-                ),
-              )*/
-            ],
-          ),
-        ),
+            ),
       ),
     );
   }
