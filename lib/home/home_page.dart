@@ -1,3 +1,4 @@
+import 'package:dev_quiz/challenge/challenge_page.dart';
 import 'package:dev_quiz/core/app_colors.dart';
 import 'package:dev_quiz/core/app_text_styles.dart';
 import 'package:dev_quiz/home/home_controller.dart';
@@ -19,12 +20,12 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    super.initState();
     controller.getQuizzes();
     controller.getUser();
     controller.stateNotifier.addListener(() {
       setState(() {});
     });
+    super.initState();
   }
   @override
   Widget build(BuildContext context) {
@@ -69,6 +70,9 @@ class _HomePageState extends State<HomePage> {
                       mainAxisSpacing: 16,
                       children: controller.quizzes!
                           .map((quiz) => QuizCardWidget(
+                        onTap: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => ChallengePage(questions: quiz.questions,)));
+                        },
                         title: quiz.title,
                         completed:
                         "${quiz.questionAnswered}/${quiz.questions.length}",
