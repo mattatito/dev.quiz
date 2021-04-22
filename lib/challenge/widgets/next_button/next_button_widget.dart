@@ -44,7 +44,7 @@ class NextButtonWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10))),
             side: MaterialStateProperty.all(BorderSide(color: borderColor))
         ),
-        onPressed: () {},
+        onPressed: onTap,
         child: Text(
           label,
           style: GoogleFonts.notoSans(
