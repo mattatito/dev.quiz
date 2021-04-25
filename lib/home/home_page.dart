@@ -71,7 +71,7 @@ class _HomePageState extends State<HomePage> {
                       children: controller.quizzes!
                           .map((quiz) => QuizCardWidget(
                         onTap: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => ChallengePage(questions: quiz.questions,)));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => ChallengePage(questions: quiz.questions, title: quiz.title,)));
                         },
                         title: quiz.title,
                         completed:
